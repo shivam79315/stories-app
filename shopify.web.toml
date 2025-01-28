@@ -1,0 +1,17 @@
+name = "remix"
+roles = ["frontend", "backend"]
+
+[webhooks]
+webhooks_path = "/webhooks"
+
+  [[webhooks.subscriptions]]
+  topic = "APP_UNINSTALLED"
+  path = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topic = "APP_SCOPES_UPDATE"
+  path = "/webhooks/app/scopes_update"
+
+[commands]
+
+dev = "npx prisma migrate deploy && npm exec remix vite:dev"

@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "postgresql"
+  url = "postgresql://postgres:newpassword@localhost:5432/reel_stories_db?schema=public"
+}
+
+model Session {
+  id            String    @id @default(cuid())
+  shop          String   @unique
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  accessToken   String
+  expires       DateTime? @db.Timestamptz
+  userId        BigInt?
+  firstName     String?  
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+
+  // Relation to Reel
+  reels       Reel[]
+}
+
+model Story {
+  id        String   @id @default(uuid())  // Primary Key
+  storyName      String  @default("New Story")
+  numOfVideos Int      @default(0)
+  createdAt DateTime @default(now()) 
+}
+
+model Reel {
+  id             String        @id @default(uuid())
+  reel_id        String        @unique            
+  shop_url       String        // Foreign key referencing Session's shop field
+  session        Session       @relation(fields: [shop_url], references: [shop])
+  file_name      String
+  reel_url       String
+  reel_size      Float
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+
+  // Relation with Product
+  product_reels  ProductReel[]
+}
+
+model ProductReel {
+  id             String        @id @default(uuid())
+  product_id     String
+  reel_id        String        // Foreign key referencing Reel table
+  title          String
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+
+  reel           Reel          @relation(fields: [reel_id], references: [id], onDelete: Cascade)
+}
+
+

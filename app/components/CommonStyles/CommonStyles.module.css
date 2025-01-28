@@ -1,0 +1,119 @@
+.storiesWrapper {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.storiesWrapper > div {
+  width: 100%;
+  height: 100%;
+}
+
+.uploadFileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  padding: 15px;
+  overflow: hidden;
+  p {
+    max-width: 100%;
+    word-break: break-all;
+    text-align: center;
+  }
+}
+
+.tableRow {
+  cursor: pointer;
+}
+
+.tableTD {
+  width: 55px !important;
+}
+
+.videoElement {
+  width: 40px !important;
+  height: 40px !important;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.reelFormVideoContainer {
+  border: 2px solid #ebeaeb;
+  height: 130px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.productContainer {
+  overflow: hidden;
+  max-height: -webkit-fill-available;
+}
+
+.productReelContainer {
+  overflow: hidden;
+  max-height: -webkit-fill-available;
+}
+
+.modalContainer {
+  position: absolute;
+  left: 20px;
+}
+
+.reelFormVideoContainer {
+  border: 2px solid #ebeaeb;
+  height: 130px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ReelsList Component   */
+.reelsListContainer {
+  z-index: 1;
+}
+
+.modalContainer {
+  z-index: 999;
+}
+
+.deleteBtn {
+  z-index: 10000;
+  margin-left: 80%;
+}
+
+/* Home component  */
+
+.imageElement {
+  display: flex;
+  align-items: center;
+}
+
+.productImage {
+  height: 40px;
+  width: 40px;
+  border-radius: 6px;
+}
+
+/* Product component styles */
+
+.selectedVideoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  cursor: pointer;
+}
+
+.iconWrapper:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}

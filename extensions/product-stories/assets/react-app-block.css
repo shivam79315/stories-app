@@ -1,0 +1,12 @@
+#react-app-block-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgb(167, 167, 167);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    z-index: 999999;
+  }
+ 

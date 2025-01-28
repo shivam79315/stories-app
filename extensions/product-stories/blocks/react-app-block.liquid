@@ -1,0 +1,51 @@
+<!-- Include React and ReactDOM -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+
+{% if template.name == 'product' %}
+  <!-- Root Element for the React App -->
+  <div id="react-app-block-root" data-settings="{{ block.settings | json }}"></div>
+
+  <!-- Include Vendor and Main Chunks -->
+  <script src="{{ 'vendors-d2eb5610.3f4213bfa3bddf4a4315.js' | asset_url }}"></script>
+  <script src="{{ 'vendors-6c74ec58.bf576efdf319c0a07968.js' | asset_url }}"></script>
+  <script src="{{ 'vendors-229eafb5.b8831b7fc52de480e8df.js' | asset_url }}"></script>
+  <script src="{{ 'main.5dd8aeedb3bfb627ea58.js' | asset_url }}"></script>
+
+  <!-- Include Styling (if applicable) -->
+  <link rel="stylesheet" href="{{ 'react-app-block.css' | asset_url }}">
+{% endif %}
+
+<!-- Mount the React App -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const rootElement = document.getElementById("react-app-block-root");
+
+    if (rootElement && typeof AppReelsList !== "undefined") {
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(React.createElement(window.AppReelsList.default));
+    } else {
+      console.error("ReactDOM or AppReelsList is not defined.");
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "React App Block",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text"
+    },
+    {
+      "type": "url",
+      "id": "data_source",
+      "label": "Data Source URL"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,10 @@
+{
+  "react_app_block": {
+    "name": "React App Block",
+    "settings": {
+      "heading": "Heading Text",
+      "data_source": "Data Source URL"
+    }
+  }
+}
+
