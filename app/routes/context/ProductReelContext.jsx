@@ -11,7 +11,7 @@ export const ProductReelProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchProductReels = async () => {
-      setLoading(true); // Start loading
+      setLoading(true); 
       try {
         const response = await fetch(`/productReels?productId=${product?.id}`);
         const result = await response.json();
@@ -24,7 +24,7 @@ export const ProductReelProvider = ({ children }) => {
       } catch (error) {
         console.error("Error fetching product reels:", error);
       } finally {
-        setLoading(false); // End loading
+        setLoading(false); 
       }
     };
 

@@ -5,6 +5,7 @@ import ReactInstaStories from "react-insta-stories";
 import "swiper/css";
 
 const VideoModal = ({ videos, isOpen, closeModal, toggleMute, isMuted }) => {
+
   return (
     <ReactModal
       isOpen={isOpen}
@@ -48,7 +49,7 @@ const VideoModal = ({ videos, isOpen, closeModal, toggleMute, isMuted }) => {
           >
             <ReactInstaStories
               stories={[
-                { url: video.src, type: video.type, muted: isMuted },
+                { url: video.reel.reel_url? video.reel.reel_url: undefined, type: 'video', muted: isMuted },
               ]}
               width={400}
               height={600}

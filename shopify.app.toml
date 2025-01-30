@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "9d4aa77e650c56482e9d03e02ff2d051"
-application_url = "https://philadelphia-abs-shareholders-geological.trycloudflare.com"
+application_url = "https://aluminium-adolescent-colors-swedish.trycloudflare.com"
 embedded = true
 name = "product_stories"
 handle = "product_stories-1"
@@ -23,9 +23,9 @@ scopes = "read_products,write_products,write_files,read_files,read_themes,write_
 
 [auth]
 redirect_urls = [
-  "https://philadelphia-abs-shareholders-geological.trycloudflare.com/auth/callback",
-  "https://philadelphia-abs-shareholders-geological.trycloudflare.com/auth/shopify/callback",
-  "https://philadelphia-abs-shareholders-geological.trycloudflare.com/api/auth/callback"
+  "https://aluminium-adolescent-colors-swedish.trycloudflare.com/auth/callback",
+  "https://aluminium-adolescent-colors-swedish.trycloudflare.com/auth/shopify/callback",
+  "https://aluminium-adolescent-colors-swedish.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

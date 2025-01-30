@@ -9,7 +9,7 @@ export default {
     chunkFilename: "[name].[contenthash].chunk.js",
     library: "AppReelsList",
     libraryTarget: "umd",
-    publicPath: "/extensions/product-stories/assets/", 
+    publicPath: "/extensions/product-stories/assets/",
   },
   module: {
     rules: [
@@ -33,15 +33,12 @@ export default {
   resolve: {
     extensions: [".js", ".jsx"],
   },
-  externals: {
-    react: "React",
-    "react-dom": "ReactDOM",
-  },
+  // Removed the "externals" configuration to bundle all dependencies
   optimization: {
     splitChunks: {
       chunks: "all",
       minSize: 20 * 1024,
-      maxSize: 250 * 1024, 
+      maxSize: 250 * 1024,
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,

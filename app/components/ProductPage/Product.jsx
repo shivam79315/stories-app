@@ -6,19 +6,19 @@ import {
   Modal,
   FormLayout,
   TextField,
-  Box,
   BlockStack,
   Text,
-  IndexTable,
   Icon,
   Thumbnail,
   Button,
+  DataTable,
 } from "@shopify/polaris";
 import { DeleteIcon } from "@shopify/polaris-icons";
 import { useNavigate } from "@remix-run/react";
 import VideoSelectionModal from "../modals/videoSelectionModal";
 import { useProductReel } from "../../routes/context/ProductReelContext";
 import styles from "../CommonStyles/CommonStyles.module.css";
+import TestEffect from "../storyStyles/TestEffect";
 
 const Product = ({ product, actionUrl, themeId }) => {
   const navigate = useNavigate();
@@ -26,19 +26,36 @@ const Product = ({ product, actionUrl, themeId }) => {
   const [videoModalActive, setVideoModalActive] = useState(false);
   const [reelName, setReelName] = useState("");
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [shopURL, setShopURL] = useState("");
+
   const {
     attachedReels,
     handleAddProductReel,
     handleDeleteProductReel,
     setProduct,
     addLoading,
-  } = useProductReel();
+  } = useProductReel();  
 
   useEffect(() => {
     if (product?.id) {
       setProduct({ id: product.id });
     }
   }, [product?.id]);
+
+  useEffect(() => {
+    const appBridgeConfig = sessionStorage.getItem("app-bridge-config");
+
+    if (appBridgeConfig) {
+      try {
+        const parsedConfig = JSON.parse(appBridgeConfig);
+        setShopURL(parsedConfig.shop || "");
+      } catch (error) {
+        console.error("Error parsing app-bridge-config:", error);
+      }
+    }
+  }, []);
+
+  const storeName = shopURL.split(".")[0];
 
   const handleReelNameChange = useCallback(
     (newValue) => setReelName(newValue),
@@ -61,46 +78,34 @@ const Product = ({ product, actionUrl, themeId }) => {
     setReelName("");
   };
 
-  
-  const rowMarkup =
+  const rows =
     Array.isArray(attachedReels) && attachedReels.length > 0
-      ? attachedReels.map((productReel) => (
-          <IndexTable.Row id={productReel.id}>
-            <IndexTable.Cell verticalAlign="middle" className={styles.tableTD}>
-              <div
-                className={styles.videoElement}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* <video className={styles.videoElement}>
-                  <source src={productReel.reel.reelURL} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video> */}
-                <Thumbnail
-                  source="https://cdn.shopify.com/s/files/1/0684/2505/6356/files/video-film-hand-drawn-symbol-svgrepo-com_1.svg?v=1737465652"
-                  alt="Black choker necklace"
-                />
-              </div>
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-              <Text variant="bodyMd" fontWeight="bold" as="span">
-                {productReel.title}
-              </Text>
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-              {new Date(productReel.created_at).toLocaleString()}
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-              <div
-                className={styles.iconWrapper}
-                onClick={() => handleDeleteProductReel(productReel.id)}
-                title="Delete Reel"
-              >
-                <Icon source={DeleteIcon} tone="critical" />
-              </div>
-            </IndexTable.Cell>
-          </IndexTable.Row>
-        ))
-      : null;
+      ? attachedReels.map((productReel) => ({
+          id: productReel.id,
+          key: productReel.id,
+          data: [
+            <div
+              onClick={(e) => e.stopPropagation()}
+              key={`${productReel.id}-thumbnail`}
+            >
+              <Thumbnail
+                source="https://cdn.shopify.com/s/files/1/0684/2505/6356/files/video-film-hand-drawn-symbol-svgrepo-com_1.svg?v=1737465652"
+                alt="Video thumbnail"
+              />
+            </div>,
+            productReel.title,
+            new Date(productReel.created_at).toLocaleString(),
+            <div
+              className={styles.iconWrapper}
+              onClick={() => handleDeleteProductReel(productReel.id)}
+              title="Delete Reel"
+              key={`${productReel.id}-delete`}
+            >
+              <Icon source={DeleteIcon} tone="critical" />
+            </div>,
+          ],
+        }))
+      : [];
 
   const emptyStateMarkup = (
     <EmptyState
@@ -118,6 +123,7 @@ const Product = ({ product, actionUrl, themeId }) => {
       </p>
     </EmptyState>
   );
+  console.log(attachedReels)
 
   return (
     <div className={styles.productContainer}>
@@ -134,40 +140,37 @@ const Product = ({ product, actionUrl, themeId }) => {
           {
             content: "Preview to Add Story",
             onAction: () => {
-              const shopOrigin = new URLSearchParams(window.location.search).get("shop");
-              const storeName = shopOrigin.split(".")[0];
-              const formattedTitle = product.title.toLowerCase().replace(/\s+/g, '-');
-              const previewPath = `${encodeURIComponent('/products/')}${formattedTitle}`;
-              const themeEditorUrl = `https://admin.shopify.com/store/${storeName}/themes/${themeId}/editor?previewPath=${previewPath}`;
+              const formattedTitle = product.title
+                .toLowerCase()
+                .replace(/\s+/g, "-");
+              const previewPath = `${encodeURIComponent("/products/")}${formattedTitle}`;
+              const themeEditorUrl = `https://admin.shopify.com/store/${storeName}/themes/${themeId}/editor?previewPath=${previewPath}`;        
               window.open(themeEditorUrl, "_blank");
             },
-          }          
-        ]}  
+            plain: true,
+          },
+        ]}
         title={product.title}
       />
+<TestEffect />
+      {/* Data table for reels attached to product  */}
       <Page>
-      <Card variant="subdued">
-          <IndexTable
-            hasZebraStriping  
-            showCheckboxes={false}
-            selectable={false}
-            resourceName={{ singular: "productReel", plural: "productReels" }}
-            itemCount={attachedReels.length}
-            headings={[
-              { title: "" },
-              { title: "Title" },
-              { title: "Created At" },
-              { title: "" },
-            ]}
-            emptyState={
-              attachedReels.length === 0 ? emptyStateMarkup : undefined
-            }
-          >
-            {rowMarkup}
-          </IndexTable>
+        <Card variant="subdued">
+          {Array.isArray(attachedReels) && attachedReels.length > 0 ? (
+            <DataTable
+              columnContentTypes={["text", "text", "text", "text"]}
+              headings={["", "Title", "Created At", ""]}
+              hasZebraStripingOnData
+              verticalAlign="middle"
+              rows={rows.map((row) => row.data)}
+            />
+          ) : (
+            emptyStateMarkup
+          )}
         </Card>
       </Page>
 
+      {/* Modal to select reel with product  */}
       <Modal
         open={modalActive}
         onClose={() => handleClose()}
@@ -178,7 +181,7 @@ const Product = ({ product, actionUrl, themeId }) => {
             handleAddProductReel(selectedVideo, reelName),
               setModalActive(false),
               setReelName(""),
-              setSelectedVideo(null)
+              setSelectedVideo(null);
           },
           loading: addLoading,
           disabled: addLoading,
@@ -218,7 +221,8 @@ const Product = ({ product, actionUrl, themeId }) => {
           </BlockStack>
         </Modal.Section>
       </Modal>
-
+  
+      {/* Reel selection modal for product */}
       <VideoSelectionModal
         active={videoModalActive}
         onClose={toggleVideoModal}

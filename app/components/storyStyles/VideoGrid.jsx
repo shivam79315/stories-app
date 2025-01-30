@@ -2,6 +2,7 @@ import React from "react";
 import { InlineStack, Card } from "@shopify/polaris";
 
 const VideoGrid = ({ videos, openModal, isSmallScreen }) => {
+
   const styles = {
     video: {
       width: isSmallScreen ? "80px" : "160px",
@@ -14,11 +15,16 @@ const VideoGrid = ({ videos, openModal, isSmallScreen }) => {
       display: "flex",
       justifyContent: "center",
     },
+    outerDiv: {
+      display: "flex",
+      justifyContent: "center",
+      gap: "10px"
+    }
   };
-
+  
   return (
     <Card>
-      <InlineStack align="center" gap="500">
+      <div style={styles.outerDiv}>
         {videos.map((video, index) => (
           <InlineStack key={index} align="center">
             <div style={styles.gridCell}>
@@ -29,12 +35,12 @@ const VideoGrid = ({ videos, openModal, isSmallScreen }) => {
                 playsInline
                 loop
                 style={styles.video}
-                src={video.src}
+                src={video.reel.reel_url}
               />
             </div>
           </InlineStack>
         ))}
-      </InlineStack>
+      </div>
     </Card>
   );
 };
